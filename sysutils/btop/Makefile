@@ -4,6 +4,8 @@ GH_ACCOUNT=	aristocratos
 GH_PROJECT=	btop
 GH_TAGNAME=	v1.4.7
 
+REVISION=	0
+
 CATEGORIES=	sysutils
 
 # Apache 2.0
