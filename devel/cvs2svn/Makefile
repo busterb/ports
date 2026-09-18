@@ -1,9 +1,18 @@
 COMMENT=	migrate repositories from CVS to Subversion/GIT/BZR
 
-# py3: https://github.com/mhagger/cvs2svn/issues/9
-MODPY_DISTV=	2.5.0
+# Python 3 port, tracking github.com/busterb/cvs2svn's python3-port
+#
+MODPY_DISTV=	3.0.0.dev0
 DISTNAME=	cvs2svn-${MODPY_DISTV}
-SITES=		https://github.com/mhagger/cvs2svn/releases/download/${MODPY_DISTV}/
+PKGNAME=	cvs2svn-${MODPY_DISTV}
+
+EPOCH=		0
+
+GH_ACCOUNT=	busterb
+GH_PROJECT=	cvs2svn
+GH_TAGNAME=	python3-port-2
+
+WRKDIST=	${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}
 
 CATEGORIES=	devel
 
@@ -13,22 +22,21 @@ HOMEPAGE=	https://github.com/mhagger/cvs2svn
 PERMIT_PACKAGE=	Yes
 
 MODULES=	lang/python
-MODPY_VERSION=	${MODPY_DEFAULT_VERSION_2}
-
-RUN_DEPENDS=	${MODPY_RUN_DEPENDS},-bsddb
+MODPY_PYBUILD=	setuptools
 
 TEST_FLAGS=	PYTHON=${MODPY_BIN}
 
 TEST_TARGET=	check
 
-DOCFILES=	BUGS CHANGES COPYING HACKING README doc/design-notes.txt
+DOCFILES=	BUGS.md CHANGES.md COPYING HACKING.md README.md \
+		doc/design-notes.txt
 DOCDIR=		${PREFIX}/share/doc/cvs2svn
 EXAMPLEDIR=	${PREFIX}/share/examples/cvs2svn
 
 post-install:
-	${INSTALL_DATA_DIR} ${DOCDIR}/www ${EXAMPLEDIR}
+	${INSTALL_DATA_DIR} ${DOCDIR} ${EXAMPLEDIR}
 	cd ${WRKSRC}; ${INSTALL_DATA} ${DOCFILES} ${DOCDIR}/
-	${INSTALL_DATA} ${WRKSRC}/www/*html ${DOCDIR}/www/
+	${INSTALL_DATA} ${WRKSRC}/*.html ${DOCDIR}/
 	${INSTALL_DATA} ${WRKSRC}/cvs2*-example.options ${EXAMPLEDIR}
 
 .include <bsd.port.mk>
